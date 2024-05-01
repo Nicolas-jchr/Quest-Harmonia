@@ -16,6 +16,6 @@ router.use("/items", itemsRouter);
 
 const { browse } = require("../../controllers/programActions");
 
-router.get("/", browse);
+router.get("/programs", browse);
 
 module.exports = router;

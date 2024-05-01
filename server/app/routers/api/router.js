@@ -2,20 +2,19 @@ const express = require("express");
 
 const router = express.Router();
 
-// For sayActions
-
 const { sayWelcome } = require("../../controllers/sayActions");
 
 router.get("/", sayWelcome);
+
+// For Programs
+
+const programsRouter = require("./programs/router");
+
+router.use("/programs", programsRouter);
 
 const itemsRouter = require("./items/router");
 
 router.use("/items", itemsRouter);
 
-// For programActions
-
-const { browse } = require("../../controllers/programActions");
-
-router.get("/programs", browse);
 
 module.exports = router;

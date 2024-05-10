@@ -1,5 +1,3 @@
-// Some data to make the trick
-
 const categories = [
     {
       id: 1,
@@ -11,7 +9,6 @@ const categories = [
     },
   ];
   
-  // Declare the actions
   
   const browse = (req, res) => {
     if (req.query.q != null ) {
@@ -36,7 +33,5 @@ const categories = [
       res.sendStatus(404);
     }
   };
-  
-  // Export them to import them somewhere else
   
   module.exports = { browse, read };

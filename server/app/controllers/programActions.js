@@ -23,8 +23,6 @@ const programs = [
   },
 ];
 
-// Declare the actions
-
 const browse = (req, res) => {
   if (req.query.q != null) {
     const filteredPrograms = programs.filter((program) =>
@@ -48,7 +46,5 @@ const read = (req, res) => {
     res.sendStatus(404);
   }
 };
-
-// Export them to import them somewhere else
 
 module.exports = { browse, read };

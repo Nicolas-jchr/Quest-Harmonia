@@ -6,7 +6,15 @@ const { sayWelcome } = require("../../controllers/sayActions");
 
 router.get("/", sayWelcome);
 
-// For Programs
+/* ************************************************************************* */
+// Import And Use Routers Here
+/* ************************************************************************* */
+
+/* Add these *************************************************************** */
+const categoriesRouter = require("./categories/router");
+
+router.use("/categories", categoriesRouter);
+/* ************************************************************************* */
 
 const programsRouter = require("./programs/router");
 
@@ -16,5 +24,6 @@ const itemsRouter = require("./items/router");
 
 router.use("/items", itemsRouter);
 
+/* ************************************************************************* */
 
 module.exports = router;

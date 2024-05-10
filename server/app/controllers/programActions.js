@@ -1,3 +1,5 @@
+// Some data to make the trick
+
 const programs = [
   {
     id: 1,
@@ -21,8 +23,32 @@ const programs = [
   },
 ];
 
+// Declare the actions
+
 const browse = (req, res) => {
-  res.json(programs);
+  if (req.query.q != null) {
+    const filteredPrograms = programs.filter((program) =>
+      program.synopsis.includes(req.query.q)
+    );
+
+    res.json(filteredPrograms);
+  } else {
+    res.json(programs);
+  }
 };
 
-module.exports = { browse };
+const read = (req, res) => {
+  const parsedId = parseInt(req.params.id, 10);
+
+  const program = programs.find((p) => p.id === parsedId);
+
+  if (program != null) {
+    res.json(program);
+  } else {
+    res.sendStatus(404);
+  }
+};
+
+// Export them to import them somewhere else
+
+module.exports = { browse, read };

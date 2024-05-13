@@ -9,7 +9,6 @@ const categories = [
     },
   ];
   
-  
   const browse = (req, res) => {
     if (req.query.q != null ) {
       const filteredCategories = categories.filter((categorie) =>

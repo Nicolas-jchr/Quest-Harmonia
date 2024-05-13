@@ -8,5 +8,4 @@ router.get("/", browse);
 
 router.get("/:id", read);
 
-
 module.exports = router;

@@ -19,6 +19,4 @@ const itemsRouter = require("./items/router");
 
 router.use("/items", itemsRouter);
 
-
-
 module.exports = router;

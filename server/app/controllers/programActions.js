@@ -1,4 +1,4 @@
-// Some data to make the trick
+const tables = require("../../database/tables");
 
 const programs = [
   {
@@ -23,16 +23,12 @@ const programs = [
   },
 ];
 
-const browse = (req, res) => {
-  if (req.query.q != null) {
-    const filteredPrograms = programs.filter((program) =>
-      program.synopsis.includes(req.query.q)
-    );
+// Declare the action
 
-    res.json(filteredPrograms);
-  } else {
-    res.json(programs);
-  }
+const browse = async (req, res) => {
+  const programsFromDB = await tables.program.readAll();
+
+  res.json(programsFromDB);
 };
 
 const read = (req, res) => {
@@ -46,5 +42,7 @@ const read = (req, res) => {
     res.sendStatus(404);
   }
 };
+
+// Export it to import it somewhere else
 
 module.exports = { browse, read };

@@ -15,6 +15,7 @@ const {
   destroy,
 } = require("../../../controllers/categoryActions");
 
+
 // Route to get a list of categories
 router.get("/", browse);
 

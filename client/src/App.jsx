@@ -14,7 +14,7 @@ function App() {
             <Link to="/categories">Catégories</Link>
           </li>
           <li>
-            <Link to="/programs">Programmes</Link>
+            <Link to="/programs">Programs</Link>
           </li>
         </ul>
       </nav>

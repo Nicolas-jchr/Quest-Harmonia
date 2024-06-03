@@ -13,9 +13,8 @@ import App from "./App";
 import Categories from "./pages/Categories";
 import CategoryDetails from "./pages/CategoryDetails";
 import CategoryEdit from "./pages/CategoryEdit";
-
 import Programs from "./pages/Programs";
-import ProgramDetails from "./pages/ProgramDetails";
+import ProgramsDetails from "./pages/ProgramDetails";
 import ProgramEdit from "./pages/ProgramEdit";
 
 const router = createBrowserRouter([
@@ -99,7 +98,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/programs/:id",
-        element: <ProgramDetails />,
+        element: <ProgramsDetails />,
         loader: async ({ params }) => {
           const response = await myAxios.get(`/api/programs/${params.id}`);
 

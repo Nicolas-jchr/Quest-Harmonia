@@ -10,7 +10,6 @@ class CategorySeeder extends AbstractSeeder {
     const categories = [{ name: "Comédie" }, { name: "Science-Fiction" }];
 
     categories.forEach((category) => {
-      // insert into category(name) values (?)
       const categoryWithRefName = {
         ...category,
         refName: `category_${category.name}`,

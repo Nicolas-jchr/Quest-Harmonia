@@ -1,48 +1,92 @@
+// Import access to database tables
 const tables = require("../../database/tables");
 
-const programs = [
-  {
-    id: 1,
-    title: "The Good Place",
-    synopsis:
-      "À sa mort, Eleanor Shellstrop est envoyée au Bon Endroit, un paradis fantaisiste réservé aux individus exceptionnellement bienveillants. Or Eleanor n'est pas exactement une « bonne personne » et comprend vite qu'il y a eu erreur sur la personne. Avec l'aide de Chidi, sa prétendue âme sœur dans l'au-delà, la jeune femme est bien décidée à se redécouvrir.",
-    poster:
-      "https://img.betaseries.com/JwRqyGD3f9KvO_OlfIXHZUA3Ypw=/600x900/smart/https%3A%2F%2Fpictures.betaseries.com%2Ffonds%2Fposter%2F94857341d71c795c69b9e5b23c4bf3e7.jpg",
-    country: "USA",
-    year: 2016,
-  },
-  {
-    id: 2,
-    title: "Dark",
-    synopsis:
-      "Quatre familles affolées par la disparition d'un enfant cherchent des réponses et tombent sur un mystère impliquant trois générations qui finit de les déstabiliser.",
-    poster:
-      "https://img.betaseries.com/zDxfeFudy3HWjxa6J8QIED9iaVw=/600x900/smart/https%3A%2F%2Fpictures.betaseries.com%2Ffonds%2Fposter%2Fc47135385da176a87d0dd9177c5f6a41.jpg",
-    country: "Allemagne",
-    year: 2017,
-  },
-];
+// The B of BREAD - Browse (Read All) operation
+const browse = async (req, res, next) => {
+  try {
+    // Fetch all programs from the database
+    const programs = await tables.program.readAll();
 
-// Declare the action
-
-const browse = async (req, res) => {
-  const programsFromDB = await tables.program.readAll();
-
-  res.json(programsFromDB);
-};
-
-const read = (req, res) => {
-  const parsedId = parseInt(req.params.id, 10);
-
-  const program = programs.find((p) => p.id === parsedId);
-
-  if (program != null) {
-    res.json(program);
-  } else {
-    res.sendStatus(404);
+    // Respond with the programs in JSON format
+    res.status(200).json(programs);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
   }
 };
 
-// Export it to import it somewhere else
+// The R of BREAD - Read operation
+const read = async (req, res, next) => {
+  try {
+    // Fetch a specific program from the database based on the provided ID
+    const program = await tables.program.read(req.params.id);
 
-module.exports = { browse, read };
+    // If the program is not found, respond with HTTP 404 (Not Found)
+    // Otherwise, respond with the program in JSON format
+    if (program == null) {
+      res.sendStatus(404);
+    } else {
+      res.status(200).json(program);
+    }
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+// The E of BREAD - Edit (Update) operation
+const edit = async (req, res, next) => {
+  // Extract the program data from the request body and params
+  const program = { ...req.body, id: req.params.id };
+
+  try {
+    // Update the program in the database
+    await tables.program.update(program);
+
+    // Respond with HTTP 204 (No Content)
+    res.sendStatus(204);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+// The A of BREAD - Add (Create) operation
+const add = async (req, res, next) => {
+  // Extract the program data from the request body
+  const program = req.body;
+
+  try {
+    // Insert the program into the database
+    const insertId = await tables.program.create(program);
+
+    // Respond with HTTP 201 (Created) and the ID of the newly inserted program
+    res.status(201).json({ insertId });
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+// The D of BREAD - Destroy (Delete) operation
+const destroy = async (req, res, next) => {
+  try {
+    // Delete the program from the database
+    await tables.program.delete(req.params.id);
+
+    // Respond with HTTP 204 (No Content)
+    res.sendStatus(204);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+// Ready to export the controller functions
+module.exports = {
+  browse,
+  read,
+  edit,
+  add,
+  destroy,
+};

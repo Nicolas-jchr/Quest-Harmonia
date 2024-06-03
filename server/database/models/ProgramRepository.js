@@ -7,12 +7,72 @@ class ProgramRepository extends AbstractRepository {
     super({ table: "program" });
   }
 
+  // The C of CRUD - Create operation
+
+  async create(program) {
+    // Execute the SQL INSERT query to add a new program to the "program" table
+    const [result] = await this.database.query(
+      `insert into ${this.table} (name) values (?)`,
+      [program.name]
+    );
+
+    // Return the ID of the newly inserted program
+    return result.insertId;
+  }
+
+  // The Rs of CRUD - Read operations
+
+  async read(id) {
+    // Execute the SQL SELECT query to retrieve a specific category by its ID
+    const [rows] = await this.database.query(
+      `select program.*, JSON_ARRAYAGG(
+          JSON_OBJECT(
+            "id", program.id,
+            "title", program.title
+          )
+        ) as programs from ${this.table}
+        left join program on program.program_id = program.id
+        where program.id = ?
+        group by program.id`,
+      [id]
+    );
+
+    // Return the first row of the result, which represents the program
+    return rows[0];
+  }
+
   async readAll() {
-    // Execute the SQL SELECT query to retrieve all programs from the "program" table
+    // Execute the SQL SELECT query to retrieve all categories from the "program" table
     const [rows] = await this.database.query(`select * from ${this.table}`);
 
-    // Return the array of programs
+    // Return the array of categories
     return rows;
+  }
+
+  // The U of CRUD - Update operation
+
+  async update(program) {
+    // Execute the SQL UPDATE query to update a specific program
+    const [result] = await this.database.query(
+      `update ${this.table} set name = ? where id = ?`,
+      [program.name, program.id]
+    );
+
+    // Return how many rows were affected
+    return result.affectedRows;
+  }
+
+  // The D of CRUD - Delete operation
+
+  async delete(id) {
+    // Execute the SQL DELETE query to delete a specific program
+    const [result] = await this.database.query(
+      `delete from ${this.table} where id = ?`,
+      [id]
+    );
+
+    // Return how many rows were affected
+    return result.affectedRows;
   }
 }
 

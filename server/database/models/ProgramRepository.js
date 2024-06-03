@@ -12,8 +12,15 @@ class ProgramRepository extends AbstractRepository {
   async create(program) {
     // Execute the SQL INSERT query to add a new program to the "program" table
     const [result] = await this.database.query(
-      `insert into ${this.table} (name) values (?)`,
-      [program.name]
+      `insert into ${this.table} (title, synopsis, poster, country, year, category_id) values (?, ?, ?, ?, ?, ?)`,
+      [
+        program.title,
+        program.synopsis,
+        program.poster,
+        program.country,
+        program.year,
+        program.category_id,
+      ]
     );
 
     // Return the ID of the newly inserted program
@@ -23,17 +30,9 @@ class ProgramRepository extends AbstractRepository {
   // The Rs of CRUD - Read operations
 
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific category by its ID
+    // Execute the SQL SELECT query to retrieve a specific program by its ID
     const [rows] = await this.database.query(
-      `select program.*, JSON_ARRAYAGG(
-          JSON_OBJECT(
-            "id", program.id,
-            "title", program.title
-          )
-        ) as programs from ${this.table}
-        left join program on program.program_id = program.id
-        where program.id = ?
-        group by program.id`,
+      `select * from ${this.table} where id = ?`,
       [id]
     );
 
@@ -42,10 +41,10 @@ class ProgramRepository extends AbstractRepository {
   }
 
   async readAll() {
-    // Execute the SQL SELECT query to retrieve all categories from the "program" table
+    // Execute the SQL SELECT query to retrieve all programs from the "program" table
     const [rows] = await this.database.query(`select * from ${this.table}`);
 
-    // Return the array of categories
+    // Return the array of programs
     return rows;
   }
 

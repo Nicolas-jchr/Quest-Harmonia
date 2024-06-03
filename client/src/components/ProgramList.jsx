@@ -17,9 +17,10 @@ ProgramList.propTypes = {
   programs: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
 };
 
 export default ProgramList;
+
